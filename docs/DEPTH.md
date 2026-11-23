@@ -12,7 +12,8 @@
 | M4 扣杂竞价 | 查看并执行扣杂竞价 | `POST /api/auction` | `app/modules/auction/rules.py` | `tests/test_auction.py` |
 | M5 更正裁决 | 查看并执行更正裁决 | `POST /api/correction` | `app/modules/correction/rules.py` | `tests/test_correction.py` |
 | M6 应付对账 | 查看并执行应付对账 | `POST /api/reconcile` | `app/modules/reconcile/rules.py` | `tests/test_reconcile.py` |
-| M7 结算归档 | 查看并执行结算归档 | `POST /api/archive` | `app/modules/archive/rules.py` | `tests/test_archive.py` |
+| M7 提货放行 | 查看并执行提货放行 | `POST /api/release` | `app/modules/release/rules.py` | `tests/test_release.py` |
+| M8 结算归档 | 查看并执行结算归档 | `POST /api/archive` | `app/modules/archive/rules.py` | `tests/test_archive.py` |
 
 ## 陷阱登记
 
@@ -34,6 +35,7 @@
 ## 对账规则
 
 输入=采纳原始行+隔离行+空行+同值重复行+重复表头。计价版本总额与生效票总额分别展示，避免把更正前后重复求和。最终应付=已付+待付，负待付为退款。
+放行只对已结清票（待付≤0）按扣杂净重放行，未结清票全额暂缓；放行量+暂缓量=生效票计价总量，归档前必须对平，否则状态为待处理。更正冲突票不可放行，其累计已付额保留在放行证据中。同票重跑批号不变，不新增放行量。
 
 ## 已知不覆盖
 
